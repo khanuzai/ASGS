@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+
+# Database
+*.db
+
+# Environment variables
+.env
+.env.*
+
+# Node (future frontend)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
