@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .db import init_db
-from .routers import models, simulate, assessments
+from db import init_db
+from routers import models, simulate, assessments
 
 app = FastAPI(
     title="Attack Surface Growth Simulator API",
