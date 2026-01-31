@@ -67,3 +67,11 @@ htmlcov/
 # Misc
 .vercel
 .netlify
+
+.venv/
+venv/
+__pycache__/
+node_modules/
+*.db
+
+

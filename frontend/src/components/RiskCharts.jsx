@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 export default function RiskCharts({ xValues, rValues, rPrimeValues, xUnsafeStart, threshold }) {
-  // Combine data for charts (keep x numeric for ReferenceArea)
   const chartData = xValues.map((x, idx) => ({
     x: Number(x.toFixed(2)),
     r: Number(rValues[idx]?.toFixed(2) || 0),
@@ -20,21 +19,19 @@ export default function RiskCharts({ xValues, rValues, rPrimeValues, xUnsafeStar
   }));
 
   const maxX = Math.max(...xValues);
-  const minX = Math.min(...xValues);
 
-  // Custom tooltip with dark theme
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-800/95 border border-white/20 rounded-lg p-3 shadow-xl backdrop-blur-sm">
-          <p className="text-white font-semibold mb-2">x = {label}</p>
+        <div className="bg-slate-900/95 backdrop-blur-sm border border-cyan-500/30 rounded-xl p-4 shadow-2xl shadow-cyan-500/20">
+          <p className="text-white font-bold mb-2 text-sm">x = {label}</p>
           {payload.map((entry, idx) => (
             <p
               key={idx}
-              className="text-sm"
+              className="text-xs font-medium"
               style={{ color: entry.color }}
             >
-              {entry.name}: <span className="font-semibold">{entry.value}</span>
+              {entry.name}: <span className="font-bold">{entry.value}</span>
             </p>
           ))}
         </div>
@@ -43,134 +40,193 @@ export default function RiskCharts({ xValues, rValues, rPrimeValues, xUnsafeStar
     return null;
   };
 
-  // Dark theme colors
-  const rColor = "#60a5fa"; // blue-400
-  const rPrimeColor = "#f472b6"; // pink-400
-  const unsafeColor = "rgba(239, 68, 68, 0.15)"; // red-500 with opacity
+  const rColor = "#22d3ee"; // cyan-400
+  const rPrimeColor = "#c084fc"; // purple-400
+  const unsafeColor = "rgba(239, 68, 68, 0.12)"; // red with opacity
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 shadow-lg space-y-6">
-      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">Risk Growth Visualization</h3>
+    <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 shadow-2xl space-y-8">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="w-1 h-6 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
+        <h3 className="text-lg font-bold text-white uppercase tracking-wide">Risk Growth Visualization</h3>
+      </div>
       
-      {/* R(x) Chart - Risk Function */}
-      <div>
-        <h4 className="text-xs font-medium text-gray-400 mb-3">R(x) - Risk Function</h4>
-        <ResponsiveContainer width="100%" height={280}>
-          <LineChart
-            data={chartData}
-            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis
-              dataKey="x"
-              stroke="#9ca3af"
-              tick={{ fill: "#9ca3af", fontSize: 11 }}
-              tickFormatter={(value) => value.toFixed(1)}
-              label={{ value: "Attack Surface Score (x)", position: "insideBottom", offset: -5, fill: "#d1d5db", fontSize: 12 }}
-            />
-            <YAxis
-              stroke="#9ca3af"
-              tick={{ fill: "#9ca3af", fontSize: 11 }}
-              label={{ value: "Risk R(x)", angle: -90, position: "insideLeft", fill: "#d1d5db", fontSize: 12 }}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend
-              wrapperStyle={{ color: "#d1d5db", fontSize: 12 }}
-              iconType="line"
-            />
-            {xUnsafeStart != null && (
-              <>
-                <ReferenceArea
-                  x1={xUnsafeStart}
-                  x2={maxX}
-                  stroke="none"
-                  fill={unsafeColor}
-                  label={{ value: "Unsafe Zone", position: "top", fill: "#ef4444", fontSize: 11 }}
-                />
-                <ReferenceLine
-                  x={xUnsafeStart}
-                  stroke="#ef4444"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  label={{ value: `Unsafe at x=${xUnsafeStart.toFixed(1)}`, position: "top", fill: "#ef4444", fontSize: 11 }}
-                />
-              </>
-            )}
-            <Line
-              type="monotone"
-              dataKey="r"
-              stroke={rColor}
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4, fill: rColor }}
-              name="R(x)"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+      {/* R(x) Chart */}
+      <div className="space-y-4">
+        <h4 className="text-sm font-semibold text-gray-300 pl-1">R(x) - Risk Function</h4>
+        <div className="bg-slate-950/50 rounded-xl p-4 border border-slate-800/50">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              data={chartData}
+              margin={{ top: 10, right: 30, left: 10, bottom: 20 }}
+            >
+              <defs>
+                <linearGradient id="rGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={rColor} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={rColor} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.1)" vertical={false} />
+              <XAxis
+                dataKey="x"
+                stroke="#64748b"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                tickFormatter={(value) => value.toFixed(1)}
+                label={{ 
+                  value: "Attack Surface Score (x)", 
+                  position: "insideBottom", 
+                  offset: -10, 
+                  fill: "#cbd5e1", 
+                  fontSize: 12,
+                  fontWeight: 500
+                }}
+              />
+              <YAxis
+                stroke="#64748b"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                label={{ 
+                  value: "Risk R(x)", 
+                  angle: -90, 
+                  position: "insideLeft", 
+                  fill: "#cbd5e1", 
+                  fontSize: 12,
+                  fontWeight: 500
+                }}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: rColor, strokeWidth: 1, strokeDasharray: '5 5' }} />
+              <Legend
+                wrapperStyle={{ color: "#cbd5e1", fontSize: 12, paddingTop: '10px' }}
+                iconType="line"
+              />
+              {xUnsafeStart != null && (
+                <>
+                  <ReferenceArea
+                    x1={xUnsafeStart}
+                    x2={maxX}
+                    stroke="none"
+                    fill={unsafeColor}
+                  />
+                  <ReferenceLine
+                    x={xUnsafeStart}
+                    stroke="#ef4444"
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                    label={{ 
+                      value: `Unsafe at x=${xUnsafeStart.toFixed(1)}`, 
+                      position: "top", 
+                      fill: "#f87171", 
+                      fontSize: 11,
+                      fontWeight: 600
+                    }}
+                  />
+                </>
+              )}
+              <Line
+                type="monotone"
+                dataKey="r"
+                stroke={rColor}
+                strokeWidth={3}
+                dot={false}
+                activeDot={{ r: 5, fill: rColor, strokeWidth: 2, stroke: '#1e293b' }}
+                name="R(x)"
+                fill="url(#rGradient)"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
-      {/* R'(x) Chart - Rate of Change */}
-      <div>
-        <h4 className="text-xs font-medium text-gray-400 mb-3">R'(x) - Rate of Risk Growth</h4>
-        <ResponsiveContainer width="100%" height={280}>
-          <LineChart
-            data={chartData}
-            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis
-              dataKey="x"
-              stroke="#9ca3af"
-              tick={{ fill: "#9ca3af", fontSize: 11 }}
-              tickFormatter={(value) => value.toFixed(1)}
-              label={{ value: "Attack Surface Score (x)", position: "insideBottom", offset: -5, fill: "#d1d5db", fontSize: 12 }}
-            />
-            <YAxis
-              stroke="#9ca3af"
-              tick={{ fill: "#9ca3af", fontSize: 11 }}
-              label={{ value: "R'(x)", angle: -90, position: "insideLeft", fill: "#d1d5db", fontSize: 12 }}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend
-              wrapperStyle={{ color: "#d1d5db", fontSize: 12 }}
-              iconType="line"
-            />
-            {threshold != null && (
-              <ReferenceLine
-                y={threshold}
-                stroke="#fbbf24"
-                strokeWidth={2}
-                strokeDasharray="3 3"
-                label={{ value: `Threshold = ${threshold}`, position: "right", fill: "#fbbf24", fontSize: 11 }}
+      {/* R'(x) Chart */}
+      <div className="space-y-4">
+        <h4 className="text-sm font-semibold text-gray-300 pl-1">R'(x) - Rate of Risk Growth</h4>
+        <div className="bg-slate-950/50 rounded-xl p-4 border border-slate-800/50">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              data={chartData}
+              margin={{ top: 10, right: 30, left: 10, bottom: 20 }}
+            >
+              <defs>
+                <linearGradient id="rPrimeGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={rPrimeColor} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={rPrimeColor} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.1)" vertical={false} />
+              <XAxis
+                dataKey="x"
+                stroke="#64748b"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                tickFormatter={(value) => value.toFixed(1)}
+                label={{ 
+                  value: "Attack Surface Score (x)", 
+                  position: "insideBottom", 
+                  offset: -10, 
+                  fill: "#cbd5e1", 
+                  fontSize: 12,
+                  fontWeight: 500
+                }}
               />
-            )}
-            {xUnsafeStart != null && (
-              <>
-                <ReferenceArea
-                  x1={xUnsafeStart}
-                  x2={maxX}
-                  stroke="none"
-                  fill={unsafeColor}
-                />
+              <YAxis
+                stroke="#64748b"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+                label={{ 
+                  value: "R'(x)", 
+                  angle: -90, 
+                  position: "insideLeft", 
+                  fill: "#cbd5e1", 
+                  fontSize: 12,
+                  fontWeight: 500
+                }}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: rPrimeColor, strokeWidth: 1, strokeDasharray: '5 5' }} />
+              <Legend
+                wrapperStyle={{ color: "#cbd5e1", fontSize: 12, paddingTop: '10px' }}
+                iconType="line"
+              />
+              {threshold != null && (
                 <ReferenceLine
-                  x={xUnsafeStart}
-                  stroke="#ef4444"
+                  y={threshold}
+                  stroke="#fbbf24"
                   strokeWidth={2}
-                  strokeDasharray="5 5"
+                  strokeDasharray="3 3"
+                  label={{ 
+                    value: `Threshold = ${threshold}`, 
+                    position: "right", 
+                    fill: "#fcd34d", 
+                    fontSize: 11,
+                    fontWeight: 600
+                  }}
                 />
-              </>
-            )}
-            <Line
-              type="monotone"
-              dataKey="rPrime"
-              stroke={rPrimeColor}
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4, fill: rPrimeColor }}
-              name="R'(x)"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              )}
+              {xUnsafeStart != null && (
+                <>
+                  <ReferenceArea
+                    x1={xUnsafeStart}
+                    x2={maxX}
+                    stroke="none"
+                    fill={unsafeColor}
+                  />
+                  <ReferenceLine
+                    x={xUnsafeStart}
+                    stroke="#ef4444"
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                  />
+                </>
+              )}
+              <Line
+                type="monotone"
+                dataKey="rPrime"
+                stroke={rPrimeColor}
+                strokeWidth={3}
+                dot={false}
+                activeDot={{ r: 5, fill: rPrimeColor, strokeWidth: 2, stroke: '#1e293b' }}
+                name="R'(x)"
+                fill="url(#rPrimeGradient)"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
