@@ -176,7 +176,28 @@ venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
+--- 
+
+Frontend:
+
+cd frontend
+npm install
+npm run dev
 
 --- 
+
+🔐 Security Note
+
+ASGS is a structural risk modeling tool.
+It does not perform vulnerability scanning or real-time intrusion detection.
+
+Scores are analytical indicators intended for architectural reasoning and educational use.
+
+--- 
+
+👤 Author
+
+Built by a waterloo CS student :)))
+
 
 
