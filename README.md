@@ -180,10 +180,11 @@ uvicorn app.main:app --reload
 
 Frontend:
 
-cd frontend
-npm install
-npm run dev
-
+```bash 
+cd frontend 
+npm install 
+npm run dev 
+``` 
 --- 
 
 🔐 Security Note
