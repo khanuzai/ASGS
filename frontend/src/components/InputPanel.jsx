@@ -110,9 +110,7 @@ export default function InputPanel({ form, onChange, onSubmit, onReset, loading,
           </div>
         )}
 
-        <div className="text-xs text-gray-500 pt-2">
-          Backend must be running on <code className="text-cyan-400 bg-slate-900/70 px-2 py-1 rounded border border-slate-700/30">localhost:8000</code>
-        </div>
+    
       </div>
     </div>
   );
