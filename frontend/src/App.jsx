@@ -119,9 +119,9 @@ export default function App() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-gray-400 text-sm">
             Made by{" "}
-            <span className="text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text font-semibold">
+            <a href="https://khanzai.vercel.app" target="_blank" rel="noreferrer" className="text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text font-semibold hover:underline">
               Abdullah Khan
-            </span>
+            </a>
             {" "}in 2026
           </div>
         </div>
