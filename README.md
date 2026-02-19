@@ -1,64 +1,182 @@
-# Attack Surface Growth Simulator (ASGS)
+# 🛡️ Attack Surface Growth Simulator (ASGS)
 
-ASGS is a cybersecurity risk modeling project that analyzes how a system’s
-attack surface grows as complexity increases.
+ASGS is a full-stack cybersecurity risk modeling platform that quantifies how a system’s **attack surface expands as complexity scales**.
 
-Instead of scanning live systems, ASGS uses a mathematical and heuristic
-model to reason about risk growth based on system characteristics such as:
-- exposed endpoints
-- user scale
-- authentication posture
-- traffic patterns
-- vulnerability management
-- security controls
+Rather than scanning live infrastructure, ASGS models structural risk using normalized system metrics and mathematically derives how security exposure accelerates as organizations grow.
 
-The goal is to identify **unsafe growth regions** where adding users,
-features, or integrations causes disproportionate increases in security risk.
+It is designed to answer:
+
+> **At what point does growth begin to create disproportionate security risk?**
 
 ---
 
-## Current Status (Backend Complete)
+## 🚀 Live Demo
 
-- FastAPI backend
+*(Add deployed URL here once deployed)*
+
+---
+
+## 🎯 Problem
+
+As companies scale:
+- More endpoints are exposed
+- User bases grow
+- Privileged accounts increase
+- Integrations multiply
+- Patch velocity slows
+- Traffic patterns diversify
+
+Security risk does **not** grow linearly.
+
+ASGS models this nonlinear growth and identifies:
+- Inflection points  
+- Unsafe growth regions  
+- Primary risk drivers  
+- Control effectiveness  
+
+---
+
+## 🧠 Core Concepts
+
+### 1️⃣ Attack Surface Score (0–100)
+
+Weighted composite score across five security dimensions:
+
+- **Exposure**
+- **Identity**
+- **Traffic**
+- **Vulnerabilities**
+- **Controls**
+
+All raw inputs are normalized and clamped into comparable ranges before aggregation.
+
+---
+
+### 2️⃣ Nonlinear Risk Growth Modeling
+
+ASGS computes a quadratic risk function:
+
+R(x) = ax² + bx + c
+
+And its derivative:
+
+R′(x)
+
+This enables detection of:
+
+- Risk acceleration zones  
+- Unsafe growth thresholds  
+- Points where marginal risk exceeds safe limits  
+
+---
+
+### 3️⃣ Explainable Driver Breakdown
+
+Each factor contributes weighted points to the total risk score.
+
+Drivers are:
+- Ranked by magnitude  
+- Labeled as increasing or decreasing risk  
+- Fully transparent  
+
+This ensures the model remains explainable — not a black box.
+
+---
+
+## 🏗 Architecture
+
+### Backend
+- **Python**
+- **FastAPI**
+- **Pydantic validation**
+- **SQLAlchemy ORM**
+- **SQLite (development)**
+- Custom weighted scoring engine
+
+### Frontend
+- **React**
+- **Vite**
+- **TailwindCSS**
+- **Recharts**
+- Real-time visualization of:
+  - Risk curve `R(x)`
+  - Risk derivative `R′(x)`
+  - Threshold indicators
+  - Ranked driver breakdown
+
+---
+
+## 📊 Features
+
 - Attack surface scoring engine (0–100 scale)
-- Risk category decomposition (exposure, identity, traffic, vulnerabilities, controls)
-- Driver-level breakdown explaining what increases or reduces risk
+- Weighted risk decomposition across 5 categories
+- Derivative-based unsafe growth detection
+- Ranked driver contribution analysis
 - Actionable security recommendations
-- SQLite (local) for development
-- No external APIs or secrets
-
-API documentation available via Swagger:
-
-
+- Interactive parameter tuning
+- Real-time chart updates
+- Local persistence via SQLite
+- Swagger API documentation
 
 ---
 
-## Architecture
+## 🔐 Inputs Modeled
 
-- **Backend:** Python, FastAPI, SQLAlchemy
-- **Scoring Engine:** Normalized metrics + weighted risk model
-- **Storage:** SQLite (local, non-production)
-- **Frontend:** *In progress*
-
----
-
-## Planned Features
-
-- Interactive React frontend
-- Risk visualization and charts
-- Growth simulation over time
-- Unsafe growth zone detection
-- Model tuning and scenario comparison
+- Public endpoints  
+- Admin endpoints  
+- Third-party integrations  
+- Monthly active users  
+- Privileged accounts  
+- MFA adoption rate  
+- Failed login rate  
+- Monthly requests  
+- Geographic distribution  
+- Open critical vulnerabilities  
+- Mean patch time  
+- Security controls (WAF, rate limiting)  
 
 ---
 
-## Disclaimer
+## 📈 Example Insight
 
-ASGS is a **risk modeling and reasoning tool**, not a vulnerability scanner.
-Scores are indicative and intended for educational and analytical use.
+A moderate score (e.g., 32.4) may appear safe.
+
+However, derivative analysis can reveal:
+
+> Unsafe growth begins at x ≈ 73.3
+
+Meaning scaling beyond that threshold creates disproportionate security acceleration.
+
+ASGS shifts security thinking from reactive patching to proactive growth governance.
 
 ---
 
-## Author
+## 🧪 API Documentation
 
-Built by a CS student focused on cybersecurity, risk modeling, and systems design.
+Interactive Swagger docs available at:
+
+/docs
+
+Core endpoints:
+
+- `POST /assessments`
+- `POST /simulate`
+- `GET /health`
+
+---
+
+## 🛠 Local Development
+
+### Backend
+
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+--- 
+
+
