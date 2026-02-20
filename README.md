@@ -187,7 +187,7 @@ npm run dev
 ``` 
 --- 
 
-🔐 Security Note
+### 🔐 Security Note
 
 ASGS is a structural risk modeling tool.
 It does not perform vulnerability scanning or real-time intrusion detection.
@@ -196,7 +196,7 @@ Scores are analytical indicators intended for architectural reasoning and educat
 
 --- 
 
-👤 Author
+### 👤 Author
 
 Built by a waterloo CS student :)))
 
